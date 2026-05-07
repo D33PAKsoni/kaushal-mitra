@@ -1,35 +1,34 @@
 """
-KaushalMitra Backend — FastAPI Entry Point
-Run with: uvicorn main:app --reload --host 0.0.0.0 --port 8000
+KaushalMitra Backend — Day 3
+Added: scoring router, updated admin router
 """
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
-from routers import asr, session, admin
+from routers import asr, session, agent, scoring
+from routers import admin as admin_router
 from config import settings
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Startup and shutdown events."""
-    print("🚀 KaushalMitra backend starting...")
-    print(f"   Environment: {settings.ENVIRONMENT}")
-    print(f"   ASR endpoint: {settings.HF_INDIC_WHISPER_URL[:50]}...")
+    print("🚀 KaushalMitra backend starting — Day 3")
+    print(f"   Groq: {'✅' if settings.GROQ_API_KEY else '❌'}")
+    print(f"   Supabase: {'✅' if settings.SUPABASE_URL else '⚠️  seed data mode'}")
+    print(f"   Redis: {'✅' if settings.UPSTASH_REDIS_REST_URL else '❌'}")
     yield
-    print("👋 KaushalMitra backend shutting down...")
+    print("👋 Shutting down...")
 
 
 app = FastAPI(
     title="KaushalMitra API",
     description="AI SkillFit: Video Assessment for Workforce Fitment — EDCS Karnataka",
-    version="1.0.0",
+    version="3.0.0",
     lifespan=lifespan,
 )
 
-# ─── CORS ────────────────────────────────────────────────
-# Allow Vercel frontend + localhost dev
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -42,18 +41,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ─── Routers ─────────────────────────────────────────────
-app.include_router(asr.router, prefix="/asr", tags=["ASR"])
-app.include_router(session.router, prefix="/session", tags=["Session"])
-app.include_router(admin.router, prefix="/admin", tags=["Admin"])
+app.include_router(asr.router,          prefix="/asr",     tags=["ASR"])
+app.include_router(session.router,      prefix="/session", tags=["Session"])
+app.include_router(agent.router,        prefix="/agent",   tags=["Agent"])
+app.include_router(scoring.router,      prefix="/score",   tags=["Scoring"])
+app.include_router(admin_router.router, prefix="/admin",   tags=["Admin"])
 
 
 @app.get("/")
 async def root():
     return {
         "service": "KaushalMitra API",
-        "status": "running",
-        "version": "1.0.0",
+        "version": "3.0.0",
+        "day": 3,
         "tagline": "ಕೌಶಲ ಮಿತ್ರ — Skill Companion",
     }
 

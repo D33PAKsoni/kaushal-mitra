@@ -1,0 +1,65 @@
+{
+  "trade": "plumber",
+  "questions": {
+    "background": [
+      {
+        "id": "plumb_bg_1",
+        "en": "Tell me about your plumbing experience. What kinds of projects have you worked on?",
+        "kn": "ನಿಮ್ಮ ಪ್ಲಂಬಿಂಗ್ ಅನುಭವದ ಬಗ್ಗೆ ಹೇಳಿ. ನೀವು ಯಾವ ರೀತಿಯ ಯೋಜನೆಗಳಲ್ಲಿ ಕೆಲಸ ಮಾಡಿದ್ದೀರಿ?"
+      },
+      {
+        "id": "plumb_bg_2",
+        "en": "How long have you been working as a plumber and where did you learn your skills?",
+        "kn": "ನೀವು ಎಷ್ಟು ವರ್ಷಗಳಿಂದ ಪ್ಲಂಬರ್ ಆಗಿ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ನಿಮ್ಮ ಕೌಶಲ್ಯಗಳನ್ನು ಎಲ್ಲಿ ಕಲಿತಿರಿ?"
+      }
+    ],
+    "l1_domain": [
+      {
+        "id": "plumb_l1_1",
+        "en": "What is the difference between CPVC and PVC pipes? When would you use each?",
+        "kn": "CPVC ಮತ್ತು PVC ಪೈಪ್‌ಗಳ ನಡುವಿನ ವ್ಯತ್ಯಾಸವೇನು? ಯಾವಾಗ ಯಾವುದನ್ನು ಬಳಸುವಿರಿ?"
+      },
+      {
+        "id": "plumb_l1_2",
+        "en": "How do you check for a water leak in a concealed pipe? What tools do you use?",
+        "kn": "ಮರೆಮಾಡಿದ ಪೈಪ್‌ನಲ್ಲಿ ನೀರಿನ ಸೋರಿಕೆಯನ್ನು ಹೇಗೆ ಪರೀಕ್ಷಿಸುವಿರಿ? ನೀವು ಯಾವ ಉಪಕರಣಗಳನ್ನು ಬಳಸುವಿರಿ?"
+      },
+      {
+        "id": "plumb_l1_3",
+        "en": "What is water hammer and how do you prevent it?",
+        "kn": "ವಾಟರ್ ಹ್ಯಾಮರ್ ಎಂದರೇನು ಮತ್ತು ಅದನ್ನು ಹೇಗೆ ತಡೆಗಟ್ಟುವಿರಿ?"
+      }
+    ],
+    "l2_advanced": [
+      {
+        "id": "plumb_l2_1",
+        "en": "Explain how a septic tank system works. What maintenance does it require?",
+        "kn": "ಸೆಪ್ಟಿಕ್ ಟ್ಯಾಂಕ್ ವ್ಯವಸ್ಥೆ ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ? ಅದಕ್ಕೆ ಯಾವ ನಿರ್ವಹಣೆ ಅಗತ್ಯ?"
+      },
+      {
+        "id": "plumb_l2_2",
+        "en": "How do you size a water supply pipe for a 3-floor building?",
+        "kn": "3 ಅಂತಸ್ತಿನ ಕಟ್ಟಡಕ್ಕೆ ನೀರು ಸರಬರಾಜು ಪೈಪ್ ಅನ್ನು ಹೇಗೆ ಅಳತೆ ಮಾಡುವಿರಿ?"
+      }
+    ],
+    "situational": [
+      {
+        "id": "plumb_sit_1",
+        "en": "A customer calls at night saying water is flooding their bathroom. What steps do you tell them to take immediately?",
+        "kn": "ಒಬ್ಬ ಗ್ರಾಹಕರು ರಾತ್ರಿ ಕರೆ ಮಾಡಿ ತಮ್ಮ ಬಾತ್‌ರೂಮ್‌ನಲ್ಲಿ ನೀರು ತುಂಬುತ್ತಿದೆ ಎನ್ನುತ್ತಾರೆ. ನೀವು ಅವರಿಗೆ ತಕ್ಷಣ ಏನು ಮಾಡಲು ಹೇಳುವಿರಿ?"
+      },
+      {
+        "id": "plumb_sit_2",
+        "en": "You find asbestos in old pipes while doing repairs. What do you do?",
+        "kn": "ದುರಸ್ತಿ ಮಾಡುವಾಗ ಹಳೆಯ ಪೈಪ್‌ಗಳಲ್ಲಿ ಆಸ್ಬೆಸ್ಟಾಸ್ ಕಂಡುಬಂದರೆ ನೀವು ಏನು ಮಾಡುವಿರಿ?"
+      }
+    ],
+    "closing": [
+      {
+        "id": "plumb_close_1",
+        "en": "Do you have any certifications? Are you familiar with the National Building Code plumbing standards?",
+        "kn": "ನಿಮ್ಮ ಬಳಿ ಯಾವುದಾದರೂ ಪ್ರಮಾಣಪತ್ರಗಳಿವೆಯೇ? ರಾಷ್ಟ್ರೀಯ ಕಟ್ಟಡ ಸಂಹಿತೆಯ ಪ್ಲಂಬಿಂಗ್ ಮಾನದಂಡಗಳ ಬಗ್ಗೆ ನಿಮಗೆ ಗೊತ್ತೇ?"
+      }
+    ]
+  }
+}

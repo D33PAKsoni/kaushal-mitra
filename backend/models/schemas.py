@@ -11,6 +11,7 @@ import uuid
 # ─── ASR ─────────────────────────────────────────────────
 
 class TranscribeResponse(BaseModel):
+    model_config = {"protected_namespaces": ()}
     transcript: str
     language: str  # "kn", "hi", "en"
     confidence: float = Field(ge=0.0, le=1.0)

@@ -35,6 +35,7 @@ async def transcribe_audio(
     hf_token: str,
     indic_url: str,
     fallback_url: str,
+    preferred_language: str = "kn",
 ) -> dict:
     """
     Main entry point. Returns:
@@ -45,6 +46,12 @@ async def transcribe_audio(
         "model_used": "indic_whisper" | "whisper_v3",
         "processing_time_ms": int,
     }
+
+    IMPORTANT — language routing:
+    vasista22/whisper-kannada-medium is a Kannada-ONLY fine-tune.
+    When fed English/Hindi audio it hallucinates in Arabic/Urdu script.
+    For preferred_language != "kn", skip IndicWhisper entirely and use
+    Whisper large-v3 which handles multilingual audio correctly.
     """
     start = time.time()
 
@@ -53,23 +60,10 @@ async def transcribe_audio(
         "Content-Type": audio_mime,
     }
 
-    # ── Attempt 1: IndicWhisper ──────────────────────────
-    transcript, language, confidence, model = await _call_hf_asr(
-        audio_bytes=audio_bytes,
-        url=indic_url,
-        headers=headers,
-        timeout=INDIC_WHISPER_TIMEOUT,
-        model_name="indic_whisper",
-    )
-
-    # ── Confidence Router ────────────────────────────────
-    if transcript and confidence >= CONFIDENCE_THRESHOLD:
-        logger.info(f"IndicWhisper success: lang={language}, conf={confidence:.2f}")
-    else:
-        reason = "low_confidence" if transcript else "error"
-        logger.warning(
-            f"IndicWhisper {reason} (conf={confidence:.2f}) — routing to Whisper v3"
-        )
+    # ── Language-aware routing ───────────────────────────
+    # For non-Kannada, bypass IndicWhisper (Kannada-only model).
+    if preferred_language in ("en", "hi"):
+        logger.info(f"preferred_language={preferred_language} — using Whisper v3 directly")
         transcript, language, confidence, model = await _call_hf_asr(
             audio_bytes=audio_bytes,
             url=fallback_url,
@@ -77,13 +71,38 @@ async def transcribe_audio(
             timeout=FALLBACK_TIMEOUT,
             model_name="whisper_v3",
         )
+    else:
+        # ── Attempt 1: IndicWhisper (Kannada) ──────────────────────────
+        transcript, language, confidence, model = await _call_hf_asr(
+            audio_bytes=audio_bytes,
+            url=indic_url,
+            headers=headers,
+            timeout=INDIC_WHISPER_TIMEOUT,
+            model_name="indic_whisper",
+        )
+
+        # ── Confidence Router ────────────────────────────────
+        if transcript and confidence >= CONFIDENCE_THRESHOLD:
+            logger.info(f"IndicWhisper success: lang={language}, conf={confidence:.2f}")
+        else:
+            reason = "low_confidence" if transcript else "error"
+            logger.warning(
+                f"IndicWhisper {reason} (conf={confidence:.2f}) — routing to Whisper v3"
+            )
+            transcript, language, confidence, model = await _call_hf_asr(
+                audio_bytes=audio_bytes,
+                url=fallback_url,
+                headers=headers,
+                timeout=FALLBACK_TIMEOUT,
+                model_name="whisper_v3",
+            )
 
     elapsed_ms = int((time.time() - start) * 1000)
     logger.info(f"ASR complete: model={model}, time={elapsed_ms}ms, lang={language}")
 
     return {
         "transcript": transcript or "",
-        "language": language or "kn",
+        "language": language or preferred_language,
         "confidence": confidence,
         "model_used": model,
         "processing_time_ms": elapsed_ms,

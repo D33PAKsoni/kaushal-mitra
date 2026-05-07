@@ -1,0 +1,65 @@
+{
+  "trade": "electrician",
+  "questions": {
+    "background": [
+      {
+        "id": "elec_bg_1",
+        "en": "Tell me about your electrical work experience. How long have you been working as an electrician?",
+        "kn": "ನಿಮ್ಮ ವಿದ್ಯುತ್ ಕೆಲಸದ ಅನುಭವದ ಬಗ್ಗೆ ಹೇಳಿ. ನೀವು ಎಷ್ಟು ವರ್ಷಗಳಿಂದ ಎಲೆಕ್ಟ್ರಿಷಿಯನ್ ಆಗಿ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೀರಿ?"
+      },
+      {
+        "id": "elec_bg_2",
+        "en": "What type of electrical work have you done most — residential, commercial, or industrial?",
+        "kn": "ನೀವು ಹೆಚ್ಚಾಗಿ ಯಾವ ರೀತಿಯ ವಿದ್ಯುತ್ ಕೆಲಸ ಮಾಡಿದ್ದೀರಿ — ಮನೆ, ವಾಣಿಜ್ಯ, ಅಥವಾ ಕೈಗಾರಿಕಾ?"
+      }
+    ],
+    "l1_domain": [
+      {
+        "id": "elec_l1_1",
+        "en": "What is the difference between a single-phase and three-phase connection? When would you use each?",
+        "kn": "ಸಿಂಗಲ್ ಫೇಸ್ ಮತ್ತು ತ್ರಿ-ಫೇಸ್ ಸಂಪರ್ಕದ ನಡುವಿನ ವ್ಯತ್ಯಾಸವೇನು? ಯಾವಾಗ ಯಾವುದನ್ನು ಬಳಸುವಿರಿ?"
+      },
+      {
+        "id": "elec_l1_2",
+        "en": "How do you calculate the load for a house wiring project? What factors do you consider?",
+        "kn": "ಮನೆ ವೈರಿಂಗ್ ಯೋಜನೆಗೆ ಲೋಡ್ ಅನ್ನು ಹೇಗೆ ಲೆಕ್ಕ ಹಾಕುವಿರಿ? ಯಾವ ಅಂಶಗಳನ್ನು ಪರಿಗಣಿಸುವಿರಿ?"
+      },
+      {
+        "id": "elec_l1_3",
+        "en": "What is the purpose of earthing? How do you test if earthing is proper?",
+        "kn": "ಅರ್ಥಿಂಗ್ ಉದ್ದೇಶವೇನು? ಅರ್ಥಿಂಗ್ ಸರಿಯಾಗಿದೆಯೇ ಎಂದು ಹೇಗೆ ಪರೀಕ್ಷಿಸುವಿರಿ?"
+      }
+    ],
+    "l2_advanced": [
+      {
+        "id": "elec_l2_1",
+        "en": "Explain how an MCB (Miniature Circuit Breaker) works and when you would replace it versus reset it.",
+        "kn": "MCB (ಮಿನಿಯೇಚರ್ ಸರ್ಕ್ಯೂಟ್ ಬ್ರೇಕರ್) ಹೇಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತದೆ ಮತ್ತು ಯಾವಾಗ ಅದನ್ನು ಬದಲಾಯಿಸಬೇಕು ಅಥವಾ ರೀಸೆಟ್ ಮಾಡಬೇಕು?"
+      },
+      {
+        "id": "elec_l2_2",
+        "en": "What is power factor and why does it matter for industrial installations?",
+        "kn": "ಪವರ್ ಫ್ಯಾಕ್ಟರ್ ಎಂದರೇನು ಮತ್ತು ಕೈಗಾರಿಕಾ ಅನುಸ್ಥಾಪನೆಗಳಿಗೆ ಅದು ಏಕೆ ಮುಖ್ಯ?"
+      }
+    ],
+    "situational": [
+      {
+        "id": "elec_sit_1",
+        "en": "You are working on a live panel and suddenly smell burning. What do you do immediately?",
+        "kn": "ನೀವು ಲೈವ್ ಪ್ಯಾನೆಲ್‌ನಲ್ಲಿ ಕೆಲಸ ಮಾಡುತ್ತಿದ್ದೀರಿ ಮತ್ತು ಇದ್ದಕ್ಕಿದ್ದಂತೆ ಉರಿಯುವ ವಾಸನೆ ಬರುತ್ತದೆ. ನೀವು ತಕ್ಷಣ ಏನು ಮಾಡುವಿರಿ?"
+      },
+      {
+        "id": "elec_sit_2",
+        "en": "A customer complains their electricity bill has doubled. How would you investigate?",
+        "kn": "ಗ್ರಾಹಕರು ತಮ್ಮ ವಿದ್ಯುತ್ ಬಿಲ್ ದ್ವಿಗುಣವಾಗಿದೆ ಎಂದು ದೂರು ನೀಡುತ್ತಾರೆ. ನೀವು ಹೇಗೆ ತನಿಖೆ ಮಾಡುವಿರಿ?"
+      }
+    ],
+    "closing": [
+      {
+        "id": "elec_close_1",
+        "en": "What safety certifications or training do you have? Are you familiar with IS standards for electrical work?",
+        "kn": "ನಿಮ್ಮ ಬಳಿ ಯಾವ ಸುರಕ್ಷತಾ ಪ್ರಮಾಣಪತ್ರಗಳು ಅಥವಾ ತರಬೇತಿ ಇದೆ? ವಿದ್ಯುತ್ ಕೆಲಸಕ್ಕಾಗಿ IS ಮಾನದಂಡಗಳ ಬಗ್ಗೆ ನಿಮಗೆ ಪರಿಚಯವಿದೆಯೇ?"
+      }
+    ]
+  }
+}

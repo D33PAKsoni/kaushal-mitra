@@ -33,6 +33,7 @@ MAX_AUDIO_BYTES = 2 * 1024 * 1024
 @router.post("/transcribe", response_model=TranscribeResponse)
 async def transcribe(
     audio: UploadFile = File(..., description="5-second audio chunk from MediaRecorder"),
+    lang: str = "kn",
 ):
     """
     Transcribe an audio chunk using IndicWhisper (Kannada) with Whisper v3 fallback.
@@ -74,6 +75,7 @@ async def transcribe(
         hf_token=settings.HF_API_TOKEN,
         indic_url=settings.HF_INDIC_WHISPER_URL,
         fallback_url=settings.HF_WHISPER_FALLBACK_URL,
+        preferred_language=lang,
     )
 
     return TranscribeResponse(
