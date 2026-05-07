@@ -1,18 +1,18 @@
 # KaushalMitra (ಕೌಶಲ ಮಿತ್ರ) — Skill Companion
 
-[cite_start]**AI SkillFit: Video Assessment for Workforce Fitment** *Developed for the Directorate of Electronic Delivery of Citizen Services (EDCS), Karnataka Government*[cite: 8].
+**AI SkillFit: Video Assessment for Workforce Fitment** *Developed for the Directorate of Electronic Delivery of Citizen Services (EDCS), Karnataka Government*.
 
-[cite_start]KaushalMitra is a mobile-first, voice-native AI assessment platform designed specifically for Karnataka's workforce[cite: 23]. [cite_start]It addresses the challenge of identifying job-ready blue-collar and polytechnic-skilled candidates in a standardized, scalable way, particularly for users who may be semi-literate or unfamiliar with formal digital workflows[cite: 19, 20].
+KaushalMitra is a mobile-first, voice-native AI assessment platform designed specifically for Karnataka's workforce. It addresses the challenge of identifying job-ready blue-collar and polytechnic-skilled candidates in a standardized, scalable way, particularly for users who may be semi-literate or unfamiliar with formal digital workflows.
 
 ---
 
 ## 🌟 Core Features
 
-* [cite_start]**Kannada-First Design**: Built around the primary engineering challenge of dialect coverage (Belagavi, Dharwad, Coastal, and more) rather than being a generic bot with a translation layer[cite: 25, 33].
-* [cite_start]**Voice & Video Native**: The entire experience is driven by voice and video — candidates never need to type[cite: 24].
-* [cite_start]**Adaptive AI Agent**: Uses a three-layer prompt architecture to conduct dynamic interviews that branch based on candidate responses[cite: 43, 45].
-* [cite_start]**Multi-Signal Integrity**: In-browser face detection (MediaPipe), audio continuity checks, and face embedding deduplication (DeepFace) to prevent fraud[cite: 57, 62, 66].
-* [cite_start]**Govt-Grade Explainability**: Generates bilingual (English + Kannada) "reason cards" for every candidate, designed for district officers without data science backgrounds[cite: 88, 89].
+* **Kannada-First Design**: Built around the primary engineering challenge of dialect coverage (Belagavi, Dharwad, Coastal, and more) rather than being a generic bot with a translation layer.
+* **Voice & Video Native**: The entire experience is driven by voice and video — candidates never need to type.
+* **Adaptive AI Agent**: Uses a three-layer prompt architecture to conduct dynamic interviews that branch based on candidate responses.
+* **Multi-Signal Integrity**: In-browser face detection (MediaPipe), audio continuity checks, and face embedding deduplication (DeepFace) to prevent fraud.
+* **Govt-Grade Explainability**: Generates bilingual (English + Kannada) "reason cards" for every candidate, designed for district officers without data science backgrounds.
 
 ---
 
@@ -25,8 +25,8 @@
 | **Node.js** | 18+ | Required for the Next.js frontend. |
 | **Python** | 3.10+ | Required for the FastAPI backend. |
 | **WSL2** | Ubuntu 22.04 | **Mandatory for Windows users**; native Windows breaks audio libraries like `librosa`. |
-| **Supabase** | Cloud/Local | [cite_start]Database and storage[cite: 93, 104]. |
-| **Redis** | Upstash (Free) | [cite_start]Required for the async scoring pipeline[cite: 93, 112]. |
+| **Supabase** | Cloud/Local | Database and storage. |
+| **Redis** | Upstash (Free) | Required for the async scoring pipeline. |
 
 ### Step 1 — Clone & Environment Setup
 1.  **Clone the repository:**
@@ -35,9 +35,9 @@
     cd kaushal-mitra
     ```
 2.  **Configure `.env`**: Copy `.env.example` to `.env` and fill in your API keys.
-    * [cite_start]**LLM**: `GROQ_API_KEY` (Free tier, ~200ms latency for demos)[cite: 56, 178].
+    * **LLM**: `GROQ_API_KEY` (Free tier, ~200ms latency for demos).
     * **ASR**: `HF_API_TOKEN` and `HF_INDIC_WHISPER_URL` (`https://api-inference.huggingface.co/models/vasista22/whisper-kannada-medium`).
-    * [cite_start]**TTS**: `BHASHINI_API_KEY` and `BHASHINI_USER_ID`[cite: 213, 221].
+    * **TTS**: `BHASHINI_API_KEY` and `BHASHINI_USER_ID`.
 
 ### Step 2 — Backend Setup (WSL2/Linux)
 1.  **Navigate to backend and install dependencies:**
@@ -75,8 +75,8 @@
 
 ## 🛠️ Technical Architecture
 
-* [cite_start]**ASR Pipeline**: Primary ASR uses **IndicWhisper** fine-tuned on Indian languages, with a **Whisper large-v3** fallback triggered by a confidence router[cite: 36, 38, 39].
-* [cite_start]**Adaptive State Machine**: Interviews progress through Background → Technical L1 → Technical L2 (Conditional) → Situational phases[cite: 54].
-* [cite_start]**Scoring Logic**: A 3-stage pipeline involving an **Integrity Gate**, **Skill Score Computation** (55% domain, 25% communication, 20% integrity), and a **Fitment Classifier**[cite: 135, 218].
+* **ASR Pipeline**: Primary ASR uses **IndicWhisper** fine-tuned on Indian languages, with a **Whisper large-v3** fallback triggered by a confidence router.
+* **Adaptive State Machine**: Interviews progress through Background → Technical L1 → Technical L2 (Conditional) → Situational phases.
+* **Scoring Logic**: A 3-stage pipeline involving an **Integrity Gate**, **Skill Score Computation** (55% domain, 25% communication, 20% integrity), and a **Fitment Classifier**.
 
 ---
