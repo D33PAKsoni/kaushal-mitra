@@ -21,10 +21,8 @@ from typing import Tuple
 
 logger = logging.getLogger(__name__)
 
-# Language confidence threshold — below this, route to fallback
 CONFIDENCE_THRESHOLD = 0.75
 
-# Timeout settings (seconds)
 INDIC_WHISPER_TIMEOUT = 30.0   # HF cold start can be slow
 FALLBACK_TIMEOUT = 20.0
 
@@ -60,8 +58,6 @@ async def transcribe_audio(
         "Content-Type": audio_mime,
     }
 
-    # ── Language-aware routing ───────────────────────────
-    # For non-Kannada, bypass IndicWhisper (Kannada-only model).
     if preferred_language in ("en", "hi"):
         logger.info(f"preferred_language={preferred_language} — using Whisper v3 directly")
         transcript, language, confidence, model = await _call_hf_asr(
@@ -72,7 +68,6 @@ async def transcribe_audio(
             model_name="whisper_v3",
         )
     else:
-        # ── Attempt 1: IndicWhisper (Kannada) ──────────────────────────
         transcript, language, confidence, model = await _call_hf_asr(
             audio_bytes=audio_bytes,
             url=indic_url,
@@ -81,7 +76,6 @@ async def transcribe_audio(
             model_name="indic_whisper",
         )
 
-        # ── Confidence Router ────────────────────────────────
         if transcript and confidence >= CONFIDENCE_THRESHOLD:
             logger.info(f"IndicWhisper success: lang={language}, conf={confidence:.2f}")
         else:
@@ -136,11 +130,8 @@ async def _call_hf_asr(
 
         data = response.json()
 
-        # HF Whisper response format: {"text": "...", "chunks": [...]}
         transcript = data.get("text", "").strip()
 
-        # Attempt language detection from response
-        # IndicWhisper returns language in chunks[0].language if available
         language = "kn"
         confidence = 1.0
 
@@ -149,8 +140,6 @@ async def _call_hf_asr(
             lang_tag = chunks[0].get("language", "kn")
             language = _normalize_language(lang_tag)
 
-        # Estimate confidence from transcript quality
-        # (HF free tier doesn't always return log_probs)
         if not transcript:
             confidence = 0.0
         elif len(transcript) < 3:

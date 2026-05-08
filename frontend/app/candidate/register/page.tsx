@@ -42,7 +42,6 @@ export default function RegisterPage() {
     }
   }, [router]);
 
-  // Check if permissions already granted (browser remembers)
   useEffect(() => {
     const checkExisting = async () => {
       if (!navigator.permissions) return;
@@ -141,7 +140,6 @@ export default function RegisterPage() {
     }
   };
 
-  // Button label and colour logic
   const getButtonConfig = () => {
     if (loading) return { label: t("pleaseWait", lang), cls: "bg-gray-400 cursor-not-allowed" };
     if (requesting) return {
@@ -188,7 +186,6 @@ export default function RegisterPage() {
 
         <div className="space-y-4">
 
-          {/* Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t("name", lang)}
@@ -202,7 +199,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          {/* Trade */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t("trade", lang)}
@@ -224,7 +220,6 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* District */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t("district", lang)}
@@ -241,7 +236,6 @@ export default function RegisterPage() {
             </select>
           </div>
 
-          {/* Permission status indicators */}
           {permRequested && (
             <div className="grid grid-cols-2 gap-2">
               <div className={`flex items-center gap-2 rounded-xl px-3 py-2 text-sm ${
@@ -263,7 +257,6 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Browser instructions when denied */}
           {anyDenied && (
             <div className="bg-orange-50 border border-orange-200 rounded-xl p-3 text-xs text-orange-700 space-y-1">
               <p className="font-medium">

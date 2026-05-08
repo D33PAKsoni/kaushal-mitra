@@ -5,7 +5,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-green-900 to-green-700 text-white px-4">
-      {/* Logo / Title */}
       <div className="text-center mb-10">
         <div className="text-6xl mb-4">🎓</div>
         <h1 className="text-4xl font-bold mb-1">KaushalMitra</h1>
@@ -13,7 +12,6 @@ export default function Home() {
         <p className="text-green-300 text-sm">Skill Companion · EDCS Karnataka</p>
       </div>
 
-      {/* Description */}
       <div className="bg-white/10 rounded-2xl p-6 max-w-sm w-full text-center mb-8">
         <p className="text-lg font-kannada mb-2">
           ನಿಮ್ಮ ಕೌಶಲ ಮೌಲ್ಯಮಾಪನಕ್ಕೆ ಸ್ವಾಗತ
@@ -44,7 +42,6 @@ export default function Home() {
         Admin Dashboard →
       </Link>
 
-      {/* Karnataka Govt branding */}
       <div className="absolute bottom-6 text-center text-green-400 text-xs">
         <p>Directorate of Electronic Delivery of Citizen Services</p>
         <p>Government of Karnataka</p>

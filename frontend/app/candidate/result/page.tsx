@@ -57,7 +57,6 @@ function ResultContent() {
 
     const poll = async () => {
       try {
-        // Update status message
         setStatusText(messages[Math.floor(count / 3) % messages.length]);
         setPollCount(count);
 
@@ -90,10 +89,8 @@ function ResultContent() {
     poll(); // immediate first call
     const timer = setInterval(poll, POLL_INTERVAL);
     return () => clearInterval(timer);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId]);
 
-  // ── Waiting screen ────────────────────────────────────
   if (status === "waiting") {
     return (
       <main className="min-h-screen bg-gradient-to-b from-green-900 to-green-700 flex items-center justify-center px-4">
@@ -111,7 +108,6 @@ function ResultContent() {
                 style={{ animationDelay: `${i * 0.15}s` }} />
             ))}
           </div>
-          {/* Progress bar */}
           <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full bg-green-500 transition-all duration-300"
@@ -124,7 +120,6 @@ function ResultContent() {
     );
   }
 
-  // ── Timeout screen ────────────────────────────────────
   if (status === "timeout") {
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -154,7 +149,6 @@ function ResultContent() {
     );
   }
 
-  // ── Error screen ──────────────────────────────────────
   if (status === "error" || !result) {
     return (
       <main className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
@@ -169,7 +163,6 @@ function ResultContent() {
     );
   }
 
-  // ── Result card ───────────────────────────────────────
   const fc = result.fitment_category;
   const style = FITMENT_STYLE[fc] || FITMENT_STYLE.review_required;
   const label = lang === "kn" ? result.fitment_label_kn : result.fitment_label_en;
@@ -200,7 +193,6 @@ function ResultContent() {
           )}
         </div>
 
-        {/* Score bars */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <h3 className="font-semibold text-gray-700 mb-4">
             {lang === "kn" ? "ಸ್ಕೋರ್ ವಿವರ" : "Score Breakdown"}
@@ -210,7 +202,6 @@ function ResultContent() {
           <ScoreBar label={lang === "kn" ? "ಒಟ್ಟು" : "Composite"} score={result.composite_score} />
         </div>
 
-        {/* Summary */}
         {(cards.summary_kn || cards.summary_en) && (
           <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
             <h3 className="font-semibold text-gray-700 mb-2">{lang === "kn" ? "ಸಾರಾಂಶ" : "Summary"}</h3>
@@ -220,7 +211,6 @@ function ResultContent() {
           </div>
         )}
 
-        {/* Strengths */}
         {(cards.strengths_kn?.length || cards.strengths_en?.length) && (
           <div className="bg-green-50 rounded-2xl p-5 border border-green-100">
             <h3 className="font-semibold text-green-800 mb-3">
@@ -234,7 +224,6 @@ function ResultContent() {
           </div>
         )}
 
-        {/* Improvements */}
         {(cards.improvements_kn?.length || cards.improvements_en?.length) && (
           <div className="bg-orange-50 rounded-2xl p-5 border border-orange-100">
             <h3 className="font-semibold text-orange-800 mb-3">
@@ -248,7 +237,6 @@ function ResultContent() {
           </div>
         )}
 
-        {/* Next action */}
         {(cards.next_action_kn || cards.next_action_en) && (
           <div className="bg-blue-50 rounded-2xl p-5 border border-blue-200">
             <h3 className="font-semibold text-blue-800 mb-2">

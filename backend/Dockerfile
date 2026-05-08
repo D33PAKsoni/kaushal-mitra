@@ -1,5 +1,3 @@
-# KaushalMitra Backend — Docker
-# Docker-ready from Day 1 as per spec (NIC Cloud deployment path)
 
 FROM python:3.11-slim
 

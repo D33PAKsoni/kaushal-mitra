@@ -1,4 +1,3 @@
-// UI string translations — Kannada and English only
 export type Lang = "kn" | "en";
 
 export const T = {

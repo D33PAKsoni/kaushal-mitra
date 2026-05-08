@@ -20,7 +20,6 @@ from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
 
-# ── Pydantic model for agent response ────────────────────
 class AgentTurnResponse(BaseModel):
     answer_quality: str          # "excellent" | "good" | "poor" | "no_answer"
     answer_score: int            # 0-10
@@ -33,11 +32,9 @@ class AgentTurnResponse(BaseModel):
     is_complete: bool
 
 
-# ── State machine stages ──────────────────────────────────
 STAGE_ORDER = ["background", "l1_domain", "l2_advanced", "situational", "closing"]
 MAX_TURNS = 8
 
-# Questions per stage (min answers needed to advance)
 STAGE_MIN_TURNS = {
     "background": 1,
     "l1_domain": 2,
@@ -86,7 +83,6 @@ def determine_next_stage(
         else:
             return "situational"  # Skip L2 for weak candidates
 
-    # Normal progression
     if current_count >= min_turns:
         idx = STAGE_ORDER.index(current_stage)
         if idx < len(STAGE_ORDER) - 1:
@@ -95,7 +91,6 @@ def determine_next_stage(
     return current_stage  # Stay in current stage
 
 
-# ── System prompt ─────────────────────────────────────────
 SYSTEM_PROMPT = """You are KaushalMitra (ಕೌಶಲ ಮಿತ್ರ), an expert AI interviewer for the Government of Karnataka's skill assessment program. You assess blue-collar workers for job readiness.
 
 LANGUAGE RULES — STRICTLY FOLLOW:
@@ -156,29 +151,23 @@ async def run_agent_turn(
     """
     start = time.time()
 
-    # Load question bank
     bank = load_question_bank(trade)
 
-    # Determine state
     turn_number = session_state.get("turn_number", 0) + 1
     current_stage = session_state.get("current_stage", "background")
     stage_turn_counts = session_state.get("stage_turn_counts", {})
     used_ids = session_state.get("used_question_ids", [])
 
-    # Get next question for context
     next_q = get_next_question(bank, current_stage, used_ids)
     if not next_q:
-        # Try advancing stage
         for stage in STAGE_ORDER:
             next_q = get_next_question(bank, stage, used_ids)
             if next_q:
                 current_stage = stage
                 break
 
-    # Build messages
     messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
-    # Add context about current state
     lang_instruction = {
         "kn": "MANDATORY: next_question_kn must be written in Kannada script (ಕನ್ನಡ). Do NOT use English for this field.",
         "en": "MANDATORY: next_question_kn must be in English.",
@@ -205,7 +194,6 @@ Evaluate this answer and provide the next question JSON.
 {"NOTE: This is turn 1 — no answer to evaluate yet, just start the interview" if turn_number == 1 else ""}
 """
 
-    # Add conversation history (last 4 turns for context)
     for turn in history[-4:]:
         messages.append({"role": "user", "content": turn.get("candidate", "")})
         messages.append({"role": "assistant", "content": turn.get("agent_raw", "{}")})
@@ -228,15 +216,12 @@ Evaluate this answer and provide the next question JSON.
 
         answer_quality = data.get("answer_quality", "poor")
 
-        # Update stage counts
         stage_turn_counts[current_stage] = stage_turn_counts.get(current_stage, 0) + 1
 
-        # Determine next stage
         next_stage = determine_next_stage(
             current_stage, stage_turn_counts, answer_quality
         )
 
-        # Mark question as used
         if next_q:
             used_ids.append(next_q["id"])
 
@@ -250,7 +235,6 @@ Evaluate this answer and provide the next question JSON.
         logger.info(f"Agent turn {turn_number}: quality={answer_quality}, stage={current_stage}→{next_stage}, time={elapsed}ms")
 
         primary_q = data.get("next_question_kn", "ನಿಮ್ಮ ಸಮಯಕ್ಕೆ ಧನ್ಯವಾದ.")
-        # For Hindi/English speakers, primary is the kn field (which now contains their language)
         return AgentTurnResponse(
             answer_quality=answer_quality,
             answer_score=data.get("answer_score", 5),

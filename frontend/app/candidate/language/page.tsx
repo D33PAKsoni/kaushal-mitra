@@ -19,7 +19,6 @@ export default function LanguagePage() {
         <p className="text-green-300 text-sm mt-1">ಕೌಶಲ ಮಿತ್ರ · Skill Companion</p>
       </div>
 
-      {/* Language card */}
       <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-xl">
         <h2 className="text-center text-gray-700 font-semibold text-lg mb-1">
           ಭಾಷೆ ಆಯ್ಕೆ ಮಾಡಿ
@@ -29,7 +28,6 @@ export default function LanguagePage() {
         </p>
 
         <div className="space-y-3">
-          {/* Kannada */}
           <button
             onClick={() => choose("kn")}
             className="w-full flex items-center gap-4 border-2 border-green-200 hover:border-green-600 hover:bg-green-50 rounded-2xl px-5 py-4 transition-all active:scale-95 group"
@@ -46,7 +44,6 @@ export default function LanguagePage() {
             </span>
           </button>
 
-          {/* English */}
           <button
             onClick={() => choose("en")}
             className="w-full flex items-center gap-4 border-2 border-blue-200 hover:border-blue-600 hover:bg-blue-50 rounded-2xl px-5 py-4 transition-all active:scale-95 group"

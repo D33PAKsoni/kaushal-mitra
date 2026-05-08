@@ -9,7 +9,6 @@ interface TTSResult {
   source?: string;
 }
 
-// Map our language codes to BCP-47 for Web Speech API
 const LANG_MAP: Record<string, string> = {
   kn: "kn-IN",
   hi: "hi-IN",
@@ -22,11 +21,10 @@ export function useTTS() {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   const speak = useCallback(async (ttsResult: TTSResult, text: string, lang: string = "kn") => {
-    // Stop any current speech
     stop();
     setIsSpeaking(true);
 
-    // Option A: Bhashini audio (base64)
+    // Bhashini audio
     if (ttsResult.audio_base64) {
       try {
         const audioData = `data:audio/wav;base64,${ttsResult.audio_base64}`;
@@ -44,7 +42,7 @@ export function useTTS() {
       }
     }
 
-    // Option B: Browser Web Speech API
+    // Browser Web Speech API
     speakBrowser(ttsResult.text || text, lang);
   }, []);
 
@@ -61,7 +59,6 @@ export function useTTS() {
     utterance.rate = 0.9;
     utterance.pitch = 1.0;
 
-    // Try to find a matching voice
     const voices = window.speechSynthesis.getVoices();
     const matchedVoice = voices.find(
       (v) => v.lang === bcp47 || v.lang.startsWith(bcp47.split("-")[0])

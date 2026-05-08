@@ -57,7 +57,6 @@ async def list_candidates(
     """
     sb = _get_supabase()
     if not sb:
-        # Return seeded data if Supabase not configured
         from scripts.seed_data import SEEDED_CANDIDATES
         return {"candidates": SEEDED_CANDIDATES[:limit], "count": len(SEEDED_CANDIDATES), "source": "seed"}
 
@@ -81,7 +80,6 @@ async def list_candidates(
 
         result = query.order("created_at", desc=True).range(offset, offset + limit - 1).execute()
 
-        # Enrich with labels
         candidates = []
         for c in result.data:
             fc = c.get("fitment_category", "")

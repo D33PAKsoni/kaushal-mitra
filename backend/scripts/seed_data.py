@@ -16,7 +16,6 @@ def _dt(minutes_offset):
     return (_base + timedelta(minutes=minutes_offset)).isoformat()
 
 SEEDED_CANDIDATES = [
-    # ── Belagavi — Electrician ─────────────────────────────
     {
         "session_id": "seed-001", "name": "Ramesh Patil", "trade": "electrician",
         "district": "Belagavi", "language": "kn",
@@ -58,7 +57,6 @@ SEEDED_CANDIDATES = [
         "created_at": _dt(45),
     },
 
-    # ── Mysuru — Plumber ──────────────────────────────────
     {
         "session_id": "seed-005", "name": "Mohan Gowda", "trade": "plumber",
         "district": "Mysuru", "language": "kn",
@@ -100,7 +98,6 @@ SEEDED_CANDIDATES = [
         "created_at": _dt(105),
     },
 
-    # ── Dharwad — Electrician ─────────────────────────────
     {
         "session_id": "seed-009", "name": "Arun Kumar", "trade": "electrician",
         "district": "Dharwad", "language": "kn",
@@ -121,7 +118,6 @@ SEEDED_CANDIDATES = [
         "reason_card_kn": "ಕೈಗಾರಿಕಾ ವಿದ್ಯುತ್ ವ್ಯವಸ್ಥೆಗಳ ಅತ್ಯುತ್ತಮ ಜ್ಞಾನ.",
         "created_at": _dt(135),
     },
-    # ── DUPLICATE PAIR — Raju / Rajesh ────────────────────
     {
         "session_id": "seed-011", "name": "Raju Lamani", "trade": "electrician",
         "district": "Dharwad", "language": "kn",
@@ -145,7 +141,6 @@ SEEDED_CANDIDATES = [
         "created_at": _dt(165),
     },
 
-    # ── Bengaluru Rural — Mixed ───────────────────────────
     {
         "session_id": "seed-013", "name": "Ganesh Reddy", "trade": "electrician",
         "district": "Bengaluru Rural", "language": "en",
@@ -156,7 +151,6 @@ SEEDED_CANDIDATES = [
         "reason_card_kn": "ಅತ್ಯುತ್ತಮ ಪ್ರದರ್ಶನ. KPTCL ಗುತ್ತಿಗೆದಾರರೊಂದಿಗೆ ನಿಯೋಜನೆ ಶಿಫಾರಸು.",
         "created_at": _dt(180),
     },
-    # ── FRAUD FLAG — camera not present ──────────────────
     {
         "session_id": "seed-014", "name": "Unknown Candidate", "trade": "plumber",
         "district": "Bengaluru Rural", "language": "kn",

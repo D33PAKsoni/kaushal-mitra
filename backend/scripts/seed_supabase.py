@@ -24,14 +24,12 @@ def seed():
         c.setdefault("is_shortlisted", c.get("is_shortlisted", False))
 
     try:
-        # Upsert to avoid duplicates on re-run
         result = sb.table("candidates").upsert(
             SEEDED_CANDIDATES,
             on_conflict="session_id"
         ).execute()
         print(f"✅ Seeded {len(result.data)} candidates successfully")
 
-        # Verify
         count = sb.table("candidates").select("session_id", count="exact").execute()
         print(f"📊 Total candidates in DB: {count.count}")
 

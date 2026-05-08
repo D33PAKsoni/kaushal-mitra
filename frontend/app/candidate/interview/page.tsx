@@ -9,8 +9,6 @@ import { t, T, Lang } from "@/lib/translations";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// Interview phase state machine
-// setup → question_playing → ready_to_answer → recording → processing → (repeat) → complete
 type Phase =
   | "setup"
   | "question_playing"   // TTS active — mic button greyed out
@@ -56,7 +54,6 @@ function InterviewContent() {
   const { speak, stop: stopTTS, isSpeaking } = useTTS();
   const processingStartRef = useRef<number>(0);
 
-  // Mic is ONLY active when phase === "recording"
   const isRecording = phase === "recording";
 
   useEffect(() => {
@@ -67,7 +64,6 @@ function InterviewContent() {
   }, []);
 
   const handleTranscript = useCallback((entry: TranscriptEntry) => {
-    // Only accumulate if still in recording phase
     setCurrentTranscript((prev) =>
       prev ? `${prev} ${entry.text}` : entry.text
     );
@@ -84,7 +80,6 @@ function InterviewContent() {
     } catch { /* non-critical */ }
   }, [sessionId]);
 
-  // Called when candidate presses mic button to stop and submit
   const handleStopAndSubmit = useCallback(async () => {
     if (phase !== "recording") return;
     // Stop mic immediately
@@ -92,7 +87,6 @@ function InterviewContent() {
     setError("");
     processingStartRef.current = Date.now();
 
-    // Small delay to let the last audio chunk arrive
     await new Promise((r) => setTimeout(r, 600));
 
     try {
@@ -136,14 +130,12 @@ function InterviewContent() {
         return;
       }
 
-      // Play next question — mic button stays greyed
       setPhase("question_playing");
       await speak(
         data.tts,
         data.next_question_primary || data.next_question_kn,
         lang
       );
-      // TTS done → light up mic button
       setPhase("ready_to_answer");
 
     } catch (err: any) {
@@ -173,7 +165,6 @@ function InterviewContent() {
     return key ? t(key, lang) : stage;
   };
 
-  // ── Mic button config ──────────────────────────────────
   const micButtonConfig = (() => {
     switch (phase) {
       case "setup":
@@ -211,7 +202,6 @@ function InterviewContent() {
     }
   })();
 
-  // ── Complete screen ────────────────────────────────────
   if (phase === "complete") {
     const avgScore = turns.length
       ? Math.round(turns.reduce((s, t) => s + t.score, 0) / turns.length)
@@ -246,10 +236,8 @@ function InterviewContent() {
     );
   }
 
-  // ── Main screen ────────────────────────────────────────
   return (
     <main className="min-h-screen bg-gray-50 flex flex-col max-w-lg mx-auto">
-      {/* Header */}
       <div className="bg-green-800 text-white px-4 py-3 flex items-center justify-between">
         <div>
           <h1 className="font-bold text-base">KaushalMitra</h1>
@@ -265,7 +253,6 @@ function InterviewContent() {
         )}
       </div>
 
-      {/* Progress */}
       <div className="h-1.5 bg-gray-200">
         <div
           className="h-full bg-green-500 transition-all duration-700"
@@ -273,7 +260,6 @@ function InterviewContent() {
         />
       </div>
 
-      {/* Face Monitor */}
       <div className="px-4 pt-3">
         <FaceMonitor
           isActive={phase !== "setup"}
@@ -283,7 +269,6 @@ function InterviewContent() {
         />
       </div>
 
-      {/* Content */}
       <div className="flex-1 px-4 py-4 overflow-y-auto">
         {phase === "setup" ? (
           <div className="text-center mt-4">
@@ -304,7 +289,6 @@ function InterviewContent() {
           </div>
         ) : (
           <div className="space-y-3">
-            {/* Question card */}
             <div
               className={`rounded-2xl p-4 shadow-sm border transition-all ${
                 phase === "question_playing"
@@ -344,7 +328,6 @@ function InterviewContent() {
               )}
             </div>
 
-            {/* Live transcript while recording */}
             {currentTranscript && (phase === "recording" || phase === "processing") && (
               <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-3">
                 <p className="text-xs text-yellow-600 mb-1 font-medium">
@@ -356,7 +339,6 @@ function InterviewContent() {
               </div>
             )}
 
-            {/* Processing spinner */}
             {phase === "processing" && (
               <div className="text-center py-3 text-gray-500 text-sm">
                 <div className="inline-block w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin mr-2 align-middle" />
@@ -364,7 +346,6 @@ function InterviewContent() {
               </div>
             )}
 
-            {/* Previous turns */}
             {turns.length > 0 && (
               <div className="space-y-2 mt-1">
                 <p className="text-xs text-gray-400 uppercase tracking-wide">
@@ -396,10 +377,8 @@ function InterviewContent() {
         )}
       </div>
 
-      {/* ── Bottom controls ── */}
       <div className="px-4 pb-6 pt-3 bg-white border-t border-gray-100 space-y-3">
 
-        {/* AudioRecorder — invisible, only active when phase==="recording" */}
         <AudioRecorder
           apiUrl={API_URL}
           onTranscript={handleTranscript}
@@ -418,7 +397,6 @@ function InterviewContent() {
           </button>
         ) : (
           <div className="space-y-2">
-            {/* THE MIC BUTTON — central UX element */}
             <button
               disabled={micButtonConfig.disabled}
               onClick={() => {
@@ -434,7 +412,6 @@ function InterviewContent() {
               {micButtonConfig.label}
             </button>
 
-            {/* Skip TTS button */}
             {phase === "question_playing" && (
               <button
                 onClick={() => { stopTTS(); setPhase("ready_to_answer"); }}

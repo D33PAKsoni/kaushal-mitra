@@ -81,7 +81,6 @@ export default function FaceMonitor({
     }
   }, [onEvent]);
 
-  // Request camera permission proactively on mount (both mobile and desktop)
   useEffect(() => {
     if (permissionAsked) return;
     setPermissionAsked(true);
@@ -103,7 +102,6 @@ export default function FaceMonitor({
       }
     };
     requestCamera();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -165,7 +163,6 @@ export default function FaceMonitor({
       />
       <canvas ref={canvasRef} className="hidden" />
 
-      {/* Status pill */}
       <div
         className={`absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${
           status === "ok"
@@ -180,14 +177,12 @@ export default function FaceMonitor({
         {statusText}
       </div>
 
-      {/* Live dot */}
       {isActive && status === "ok" && (
         <div className="absolute top-2 left-2">
           <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse" />
         </div>
       )}
 
-      {/* Camera off overlay */}
       {!isActive && (
         <div className="absolute inset-0 bg-gray-900/80 flex items-center justify-center">
           <p className="text-gray-400 text-sm">📷 Camera inactive</p>

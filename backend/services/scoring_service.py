@@ -57,17 +57,14 @@ async def run_scoring_pipeline(
         "started_at": start,
     }
 
-    # ── Stage 1: Integrity Gate ───────────────────────────
     integrity = _run_integrity_gate(session_id, history, integrity_events)
     audit["stages"]["integrity"] = integrity
     logger.info(f"[Score] {session_id} Stage 1: integrity={integrity['passed']}, flags={integrity['flags']}")
 
-    # ── Stage 2: Skill Score ──────────────────────────────
     skill = _compute_skill_scores(history)
     audit["stages"]["skill"] = skill
     logger.info(f"[Score] {session_id} Stage 2: domain={skill['domain_score']:.1f}, comm={skill['communication_score']:.1f}, composite={skill['composite_score']:.1f}")
 
-    # ── Stage 3: Fitment Classifier ───────────────────────
     fitment_key = _classify_fitment(
         composite=skill["composite_score"],
         is_flagged=not integrity["passed"],
@@ -81,7 +78,6 @@ async def run_scoring_pipeline(
     }
     logger.info(f"[Score] {session_id} Stage 3: fitment={fitment_key}")
 
-    # ── Reason cards (Groq) ───────────────────────────────
     reason_cards = await _generate_reason_cards(
         session_id=session_id,
         trade=trade,
@@ -106,7 +102,6 @@ async def run_scoring_pipeline(
     return audit
 
 
-# ── Stage 1 ───────────────────────────────────────────────
 
 def _run_integrity_gate(
     session_id: str,
@@ -116,13 +111,11 @@ def _run_integrity_gate(
     flags = []
     details = {}
 
-    # 1a. Turn count check
     turn_count = len(history)
     details["turn_count"] = turn_count
     if turn_count < 3:
         flags.append("too_few_turns")
 
-    # 1b. Face presence rate
     if integrity_events:
         face_ok = sum(1 for e in integrity_events if e.get("face_detected", True))
         face_rate = face_ok / len(integrity_events)
@@ -132,11 +125,9 @@ def _run_integrity_gate(
         if any(e.get("multiple_faces") for e in integrity_events):
             flags.append("multiple_faces_detected")
     else:
-        # No events = camera not used (desktop without camera)
         details["face_presence_rate"] = None
         details["note"] = "No integrity events — camera may not have been active"
 
-    # 1c. Answer quality check — too many no-answers
     no_answer_count = sum(
         1 for t in history if t.get("quality") == "no_answer"
     )
@@ -144,7 +135,6 @@ def _run_integrity_gate(
     if no_answer_count >= 3:
         flags.append("too_many_no_answers")
 
-    # Integrity score (0-10)
     integrity_score = 10.0
     if "low_face_presence" in flags:
         integrity_score -= 3.0
@@ -164,7 +154,6 @@ def _run_integrity_gate(
     }
 
 
-# ── Stage 2 ───────────────────────────────────────────────
 
 def _compute_skill_scores(history: list[dict]) -> dict:
     if not history:
@@ -185,7 +174,6 @@ def _compute_skill_scores(history: list[dict]) -> dict:
         agent_score = float(turn.get("score", 5))
         quality = turn.get("quality", "poor")
 
-        # Communication score: word count + quality signal
         word_count = len(answer.split()) if answer else 0
         comm = min(10.0, word_count / 3.0)  # 30 words = 10/10
         if quality in ("excellent", "good"):
@@ -215,7 +203,6 @@ def _compute_skill_scores(history: list[dict]) -> dict:
     }
 
 
-# ── Stage 3 ───────────────────────────────────────────────
 
 def _classify_fitment(composite: float, is_flagged: bool) -> str:
     if is_flagged:
@@ -229,7 +216,6 @@ def _classify_fitment(composite: float, is_flagged: bool) -> str:
     return "not_suitable"
 
 
-# ── Reason cards ──────────────────────────────────────────
 
 async def _generate_reason_cards(
     session_id: str,

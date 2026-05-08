@@ -8,7 +8,6 @@ from datetime import datetime
 import uuid
 
 
-# ─── ASR ─────────────────────────────────────────────────
 
 class TranscribeResponse(BaseModel):
     model_config = {"protected_namespaces": ()}
@@ -25,7 +24,6 @@ class ASRHealthResponse(BaseModel):
     fallback_available: bool
 
 
-# ─── Session ─────────────────────────────────────────────
 
 class SessionCreateRequest(BaseModel):
     candidate_name: str
@@ -40,7 +38,6 @@ class SessionCreateResponse(BaseModel):
     message_kannada: str = "ಸೆಷನ್ ಪ್ರಾರಂಭವಾಗಿದೆ"
 
 
-# ─── Candidate (DB representation) ──────────────────────
 
 class CandidateRecord(BaseModel):
     id: str
@@ -57,7 +54,6 @@ class CandidateRecord(BaseModel):
     flag_reason: Optional[str] = None
 
 
-# ─── Admin ───────────────────────────────────────────────
 
 class AdminCandidateRow(BaseModel):
     session_id: str

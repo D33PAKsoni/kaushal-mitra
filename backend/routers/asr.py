@@ -14,7 +14,6 @@ from config import settings
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# Allowed audio MIME types from MediaRecorder
 ALLOWED_MIME_TYPES = {
     "audio/webm",
     "audio/webm;codecs=opus",
@@ -26,7 +25,6 @@ ALLOWED_MIME_TYPES = {
     "application/octet-stream",  # Some browsers send this
 }
 
-# Max audio chunk size: 5 seconds at 128kbps ≈ 80KB, allow up to 2MB
 MAX_AUDIO_BYTES = 2 * 1024 * 1024
 
 
@@ -48,14 +46,11 @@ async def transcribe(
             detail="HF_API_TOKEN not configured. Add it to your .env file.",
         )
 
-    # Validate content type
     content_type = audio.content_type or "application/octet-stream"
-    # Strip quality parameters like ;codecs=opus for basic check
     base_type = content_type.split(";")[0].strip()
     if base_type not in {m.split(";")[0] for m in ALLOWED_MIME_TYPES}:
         logger.warning(f"Unexpected MIME type received: {content_type} — proceeding anyway")
 
-    # Read audio bytes
     audio_bytes = await audio.read()
     if len(audio_bytes) == 0:
         raise HTTPException(status_code=400, detail="Empty audio file received.")
@@ -161,9 +156,9 @@ async def test_latency():
             results[model_name] = {"error": str(e)}
 
     recommendation = (
-        "✅ IndicWhisper is fast — use as primary"
+        "IndicWhisper is fast — use as primary"
         if results.get("indic_whisper", {}).get("latency_ms", 9999) < 5000
-        else "⚠️  IndicWhisper cold start slow — consider Whisper v3 as primary for demo day"
+        else "IndicWhisper cold start slow — consider Whisper v3 as primary for demo day"
     )
 
     return {"latency_results": results, "recommendation": recommendation}

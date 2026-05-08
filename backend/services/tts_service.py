@@ -71,7 +71,6 @@ async def synthesize_kannada(
             return {"use_browser_tts": True, "text": text}
 
         data = r.json()
-        # Extract audio from Bhashini response
         audio_content = (
             data.get("pipelineResponse", [{}])[0]
             .get("audio", [{}])[0]

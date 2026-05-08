@@ -13,7 +13,6 @@ import urllib.parse
 import sys
 import os
 
-# Make sure backend root is on path when run as module
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import settings
@@ -25,7 +24,6 @@ QUEUE_KEY = "km:scoring_jobs"
 POLL_INTERVAL = 3  # seconds
 
 
-# ── Upstash HTTP helpers ──────────────────────────────────
 
 async def upstash_push(job_data: dict) -> bool:
     if not settings.UPSTASH_REDIS_REST_URL:
@@ -113,7 +111,6 @@ async def upstash_ping() -> bool:
         return False
 
 
-# ── Supabase writer ───────────────────────────────────────
 
 async def write_result_to_supabase(session_id: str, result: dict):
     """Write scoring result to Supabase candidates table."""
@@ -125,7 +122,6 @@ async def write_result_to_supabase(session_id: str, result: dict):
         from supabase import create_client
         sb = create_client(settings.SUPABASE_URL, settings.SUPABASE_SERVICE_ROLE_KEY)
 
-        # Upsert into candidates table
         record = {
             "session_id": session_id,
             "fitment_category": result["fitment_category"],
@@ -153,7 +149,6 @@ async def write_result_to_supabase(session_id: str, result: dict):
         logger.error(f"Supabase write error for {session_id}: {e}")
 
 
-# ── Job processor ─────────────────────────────────────────
 
 async def process_scoring_job(job: dict):
     """Process a single scoring job from the queue."""
@@ -164,7 +159,6 @@ async def process_scoring_job(job: dict):
 
     logger.info(f"[Worker] Scoring session {session_id}: {len(history)} turns, {len(integrity_events)} integrity events")
 
-    # Store in-progress status
     await upstash_set(f"score_status:{session_id}", "processing")
 
     try:
@@ -176,7 +170,6 @@ async def process_scoring_job(job: dict):
             groq_api_key=settings.GROQ_API_KEY,
         )
 
-        # Store result in Redis (for polling by frontend)
         await upstash_set(
             f"score_result:{session_id}",
             json.dumps(result),
@@ -184,7 +177,6 @@ async def process_scoring_job(job: dict):
         )
         await upstash_set(f"score_status:{session_id}", "complete")
 
-        # Write to Supabase
         await write_result_to_supabase(session_id, result)
 
         logger.info(f"[Worker] ✅ {session_id} → {result['fitment_category']} ({result['composite_score']}/10) in {result['elapsed_seconds']}s")
@@ -194,7 +186,6 @@ async def process_scoring_job(job: dict):
         await upstash_set(f"score_status:{session_id}", "error")
 
 
-# ── Main polling loop ─────────────────────────────────────
 
 async def run_worker_loop():
     print("🔄 Starting KaushalMitra scoring worker...")
@@ -224,7 +215,6 @@ async def run_worker_loop():
             await asyncio.sleep(POLL_INTERVAL)
 
 
-# ── Test connection ───────────────────────────────────────
 
 async def test_connection():
     print("Testing Upstash + scoring pipeline...")
@@ -232,7 +222,6 @@ async def test_connection():
     print(f"Upstash ping: {'✅' if ok else '❌'}")
 
     if ok:
-        # Push a test scoring job
         test_job = {
             "session_id": "test-score-001",
             "trade": "electrician",

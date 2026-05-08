@@ -14,9 +14,9 @@ interface AudioRecorderProps {
   apiUrl: string;
   onTranscript: (entry: TranscriptEntry) => void;
   onError?: (error: string) => void;
-  isActive: boolean;         // controlled by parent — true = recording
+  isActive: boolean;         
   onMicReady?: () => void;   // called once mic permission is granted
-  lang?: string;             // "kn" | "en" | "hi" — passed to ASR for model routing
+  lang?: string;             
 }
 
 const CHUNK_DURATION_MS = 5000;
@@ -82,7 +82,6 @@ export default function AudioRecorder({
     [apiUrl, onTranscript, onError]
   );
 
-  // Initialise mic stream once on mount (asks permission early)
   useEffect(() => {
     const initStream = async () => {
       try {
@@ -95,8 +94,6 @@ export default function AudioRecorder({
           },
         });
         streamRef.current = stream;
-        // Keep stream alive but paused — stop tracks immediately,
-        // we'll re-request when actually recording
         stream.getTracks().forEach((t) => t.stop());
         streamRef.current = null;
         onMicReady?.();
@@ -109,7 +106,7 @@ export default function AudioRecorder({
       }
     };
     initStream();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   const startRecording = useCallback(async () => {
@@ -176,12 +173,11 @@ export default function AudioRecorder({
   useEffect(() => {
     if (isActive && !isRecording) startRecording();
     else if (!isActive && isRecording) stopRecording();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive]);
 
   useEffect(() => () => stopRecording(), [stopRecording]);
 
-  // Invisible component — UI is in the interview page
+
   return (
     <div className="flex items-center gap-2 justify-center">
       {isRecording && (

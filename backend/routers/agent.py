@@ -104,7 +104,7 @@ async def _run_scoring_inline(session_id: str, trade: str, history: list, integr
             ex=86400,
         )
         await upstash_set(f"score_status:{session_id}", "complete")
-        logger.info(f"[Inline Scoring] ✅ {session_id} → {result['fitment_category']} ({result['composite_score']}/10)")
+        logger.info(f"[Inline Scoring] {session_id} → {result['fitment_category']} ({result['composite_score']}/10)")
 
         # Write to Supabase (best-effort)
         if settings.SUPABASE_URL and settings.SUPABASE_SERVICE_ROLE_KEY:
@@ -154,7 +154,6 @@ async def agent_turn(body: TurnRequest):
     state = await get_session_state(body.session_id)
     history = state.get("history", [])
 
-    # Accumulate integrity events
     all_integrity = state.get("integrity_events", [])
     if body.integrity_events:
         all_integrity.extend([e.dict() for e in body.integrity_events])
@@ -190,8 +189,6 @@ async def agent_turn(body: TurnRequest):
         bhashini_user_id=settings.BHASHINI_USER_ID,
     )
 
-    # On completion — fire inline scoring as background task
-    # (no separate worker process needed — works on HF Spaces)
     if agent_resp.is_complete:
         asyncio.create_task(
             _run_scoring_inline(

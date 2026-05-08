@@ -42,7 +42,6 @@ async def create_session(body: SessionCreateRequest):
         "status": "created",
     }
 
-    # Save to Redis for scoring pipeline to read later
     try:
         from workers.scoring_worker import upstash_set
         await upstash_set(
@@ -54,7 +53,6 @@ async def create_session(body: SessionCreateRequest):
     except Exception as e:
         logger.warning(f"Redis session save failed: {e}")
 
-    # Also try Supabase
     if settings.SUPABASE_URL and settings.SUPABASE_SERVICE_ROLE_KEY:
         try:
             from supabase import create_client
@@ -63,7 +61,6 @@ async def create_session(body: SessionCreateRequest):
         except Exception as e:
             logger.warning(f"Supabase session insert failed: {e}")
 
-    # In-memory fallback
     _sessions[session_id] = session_data
 
     return SessionCreateResponse(
